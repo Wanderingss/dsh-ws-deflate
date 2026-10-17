@@ -1,0 +1,21 @@
+# dsh-ws-deflate bundle patch: inserts the host-side plugin entry.
+#
+# DSH sends the session transcript over /api/remote.mux uncompressed: the
+# gateway builds `new WebSocketServer({ noServer: true })` and never passes
+# perMessageDeflate, and there is no config key for it. This plugin wraps
+# WebSocketServer.prototype.handleUpgrade (ws reads the option per handshake,
+# not at construction) so the gateway's own instance opts in.
+#
+# Third-party ids are not in dsh-app-boot's hardcoded requiredStartupEntryIds,
+# so a failed activation is a warning, never a startup failure.
+- insert:
+    - id: ws-deflate
+      name: dsh-ws-deflate
+      config:
+        enabled: true
+        level: 6
+        thresholdBytes: 1024
+        noContextTakeover: true
+        concurrencyLimit: 10
+        selfTest: true
+        maxLog: 5

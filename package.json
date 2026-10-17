@@ -1,0 +1,48 @@
+{
+  "name": "dsh-ws-deflate",
+  "version": "0.1.0",
+  "description": "Enable permessage-deflate on DSH's WebSocket transport (/api/remote.mux) without modifying the DSH install tree. Host-only plugin; measured 70.9% fewer wire bytes for a session transcript on one Windows box.",
+  "type": "module",
+  "main": "lib/index.js",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "exports": {
+    ".": "./lib/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "websocket",
+    "permessage-deflate",
+    "compression"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CHANGE-ME/dsh-ws-deflate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CHANGE-ME/dsh-ws-deflate/issues"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/schemastery": "^3.18.1"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

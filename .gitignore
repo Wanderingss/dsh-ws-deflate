@@ -1,0 +1,7 @@
+# publish artefacts and local noise
+node_modules/
+*.tgz
+*.log
+*.bak-*
+.DS_Store
+npm-debug.log*
