@@ -1,0 +1,12 @@
+# This box has core.autocrlf on by default. Pin LF: lib/index.js and
+# cordis.patch.yml are loaded live by the running dsh process, so a silent
+# CRLF rewrite would make the working tree differ from both the committed blob
+# and the copy installed on the other machine.
+* text=auto eol=lf
+*.js   text eol=lf
+*.json text eol=lf
+*.yml  text eol=lf
+*.md   text eol=lf
+LICENSE text eol=lf
+.gitignore text eol=lf
+*.tgz binary
