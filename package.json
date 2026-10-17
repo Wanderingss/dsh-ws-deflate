@@ -27,12 +27,13 @@
     "compression"
   ],
   "license": "MIT",
+  "homepage": "https://github.com/Wanderingss/dsh-ws-deflate#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CHANGE-ME/dsh-ws-deflate.git"
+    "url": "git+https://github.com/Wanderingss/dsh-ws-deflate.git"
   },
   "bugs": {
-    "url": "https://github.com/CHANGE-ME/dsh-ws-deflate/issues"
+    "url": "https://github.com/Wanderingss/dsh-ws-deflate/issues"
   },
   "peerDependencies": {
     "@deepseek-ai/schemastery": "^3.18.1"
