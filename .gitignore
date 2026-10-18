@@ -5,3 +5,7 @@ node_modules/
 *.bak-*
 .DS_Store
 npm-debug.log*
+
+# DSH/Mnemon session state: runtime memory and the local document store.
+# Machine-local and contains notes about this box -- never publish it.
+.mnemon/
