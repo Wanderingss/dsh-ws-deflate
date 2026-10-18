@@ -1,5 +1,7 @@
 # dsh-ws-deflate
 
+**English** | [简体中文](./README.zh-CN.md)
+
 Turns on `permessage-deflate` for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh`) web's WebSocket transport, **without modifying the DSH installation**. Measured on one machine: a session transcript that left the server as **1,206,822 B went out as 350,599 B — 70.9 % fewer wire bytes**.
 
 It is a **runtime monkey-patch, not a supported extension point.** Read "Should I install this" before installing it.
