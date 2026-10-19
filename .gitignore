@@ -9,3 +9,7 @@ npm-debug.log*
 # DSH/Mnemon session state: runtime memory and the local document store.
 # Machine-local and contains notes about this box -- never publish it.
 .mnemon/
+
+# private release/operator checklist: lives in D:/Code/dsh-web (a local-only repo with
+# no remote). It names this host, a second LAN box and root paths -- never commit it.
+PUBLISH.md
