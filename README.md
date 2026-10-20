@@ -72,10 +72,10 @@ The entry **registers itself**. The bundle manifest points `dsh.bundle.patch` at
 dsh --profile web --dump-config | grep -B1 -A9 'id: ws-deflate'
 # # == dsh-ws-deflate          <- its own layer, named after the bundle
 # - id: ws-deflate
-#   name: dsh-ws-deflate
-#   config:
-#     level: 6 ...
+#   name: dsh-ws-deflate      <- no config here: the defaults live in the Config schema
 ```
+
+The entry carries no `config` block by design, so `--dump-config` shows only the id and the name. The values actually in force are printed by the plugin at activation — the same line quoted under Verify: `... (level 6, threshold 1024 B, noContextTakeover on)`. A `0.1.0` install still shows the seven keys in its tree; they were dropped as duplication.
 
 Override it only when you want non-default values, and use a **field-replacing patch, not an insert**:
 

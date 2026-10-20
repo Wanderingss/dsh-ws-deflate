@@ -72,10 +72,10 @@ dsh plugin --profile web remove dsh-ws-deflate
 dsh --profile web --dump-config | grep -B1 -A9 'id: ws-deflate'
 # # == dsh-ws-deflate          ← 独立一层，层名就是这个 bundle
 # - id: ws-deflate
-#   name: dsh-ws-deflate
-#   config:
-#     level: 6 …
+#   name: dsh-ws-deflate      ← 没有 config：默认值只存在于 Config schema 里
 ```
+
+条目里刻意不带 `config` 块，所以 `--dump-config` 只会显示 id 和 name。**真正生效的值看插件激活时打印的那一行**——就是「验证」一节引用的那句：`... (level 6, threshold 1024 B, noContextTakeover on)`。已发布的 `0.1.0` 树里仍有那 7 个键，那是重复，后续版本去掉了。
 
 只有想改配置时才需要动 yml，而且要写**字段替换补丁，不要写 insert**：
 
