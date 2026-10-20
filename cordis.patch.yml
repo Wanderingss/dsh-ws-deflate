@@ -1,21 +1,33 @@
-# dsh-ws-deflate bundle patch: inserts the host-side plugin entry.
+# dsh-ws-deflate bundle patch: registers the host-side plugin entry.
 #
 # DSH sends the session transcript over /api/remote.mux uncompressed: the
 # gateway builds `new WebSocketServer({ noServer: true })` and never passes
-# perMessageDeflate, and there is no config key for it. This plugin wraps
+# perMessageDeflate, and there is no config key for it. This patch wraps
 # WebSocketServer.prototype.handleUpgrade (ws reads the option per handshake,
 # not at construction) so the gateway's own instance opts in.
+#
+# There is deliberately NO config block here. Every key has a default in this
+# plugin's Config schema (lib/index.js) and apply() re-applies the same
+# fallbacks, so repeating them here would create a second source of truth that
+# can drift from the schema -- and a user override replaces config wholesale,
+# so a drifted value here would silently change behaviour for anyone who
+# overrides one key. Defaults live in one place: the schema.
+#
+# To change a value, add a FIELD-REPLACING patch to your profile's
+# cordis.patch.yml -- and not an insert: insert appends a second entry with the
+# same id instead of replacing this one (verified with `dsh --profile web
+# --dump-config`: the tree ends up with two `- id: ws-deflate` entries).
+#
+#   - id: ws-deflate
+#     name: dsh-ws-deflate
+#     config:
+#       level: 1
+#
+# config is replaced wholesale, not deep-merged, so list every key you want
+# kept; anything omitted falls back to the schema defaults above.
 #
 # Third-party ids are not in dsh-app-boot's hardcoded requiredStartupEntryIds,
 # so a failed activation is a warning, never a startup failure.
 - insert:
     - id: ws-deflate
       name: dsh-ws-deflate
-      config:
-        enabled: true
-        level: 6
-        thresholdBytes: 1024
-        noContextTakeover: true
-        concurrencyLimit: 10
-        selfTest: true
-        maxLog: 5

@@ -66,20 +66,36 @@ dsh plugin --profile web remove dsh-ws-deflate
 
 ## 配置
 
-在你 profile 的 `cordis.patch.yml` 里新增或修改这个条目：
+这个条目**会自己注册**：bundle 清单把 `dsh.bundle.patch` 指向本包自带的 `cordis.patch.yml`，DSH 在合成 profile 树时把它插进去——你自己的 `cordis.patch.yml` 一个字都不用写。下面这条命令是这台机器上 DSH 自己给出的证明：
+
+```bash
+dsh --profile web --dump-config | grep -B1 -A9 'id: ws-deflate'
+# # == dsh-ws-deflate          ← 独立一层，层名就是这个 bundle
+# - id: ws-deflate
+#   name: dsh-ws-deflate
+#   config:
+#     level: 6 …
+```
+
+只有想改配置时才需要动 yml，而且要写**字段替换补丁，不要写 insert**：
 
 ```yaml
+# 你 profile 的 cordis.patch.yml
 - id: ws-deflate
-  name: dsh-ws-deflate
+  name: dsh-ws-deflate      # 断言现有 name，不是改名
   config:
-    enabled: true
-    level: 6
-    thresholdBytes: 1024
+    level: 1
+    thresholdBytes: 512
     noContextTakeover: true
     concurrencyLimit: 10
     selfTest: true
     maxLog: 5
 ```
+
+两条规则都是用 `--dump-config` 实测出来的，不是照抄文档：
+
+- **`insert` 是追加，不按 id 去重。** 把包内那份补丁抄进你的 profile，树里会出现**两条** `- id: ws-deflate`——`level: 6` 和 `level: 1` 同时存在——于是你的覆盖要么静默无效，要么跑两遍。实测条目数 1 → 2。
+- **`config` 是整体替换，不做深合并。** 你没写的键会回落到本插件 schema 的默认值，而**不是**包内 patch 里那几个值。所以想保留的键必须逐个写上。
 
 | 配置键 | 默认值 | 说明 |
 |---|---:|---|

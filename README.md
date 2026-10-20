@@ -66,20 +66,36 @@ Restart. Nothing needs restoring, because nothing on disk was ever different.
 
 ## Configuration
 
-Add or edit the entry in your profile's `cordis.patch.yml`:
+The entry **registers itself**. The bundle manifest points `dsh.bundle.patch` at the `cordis.patch.yml` shipped inside this package, and DSH inserts the entry while it composes the profile tree — your own `cordis.patch.yml` never has to mention it. Proof, on this machine, from DSH itself:
+
+```bash
+dsh --profile web --dump-config | grep -B1 -A9 'id: ws-deflate'
+# # == dsh-ws-deflate          <- its own layer, named after the bundle
+# - id: ws-deflate
+#   name: dsh-ws-deflate
+#   config:
+#     level: 6 ...
+```
+
+Override it only when you want non-default values, and use a **field-replacing patch, not an insert**:
 
 ```yaml
+# your profile's cordis.patch.yml
 - id: ws-deflate
-  name: dsh-ws-deflate
+  name: dsh-ws-deflate      # asserts the existing name; not a rename
   config:
-    enabled: true
-    level: 6
-    thresholdBytes: 1024
+    level: 1
+    thresholdBytes: 512
     noContextTakeover: true
     concurrencyLimit: 10
     selfTest: true
     maxLog: 5
 ```
+
+Two rules, both verified with `--dump-config` rather than taken on faith:
+
+- **`insert` appends; it does not dedupe by id.** Copying the shipped patch into your profile file leaves **two** `- id: ws-deflate` entries in the tree — `level: 6` and `level: 1` both show up — so the override silently does nothing, or runs twice. Measured: entry count goes 1 -> 2.
+- **`config` is replaced wholesale, not deep-merged.** Any key you omit falls back to this plugin's schema defaults, not to the bundle patch's values. So list every key you intend to keep.
 
 | key | default | notes |
 |---|---:|---|
