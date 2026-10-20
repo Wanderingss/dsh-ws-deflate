@@ -1,6 +1,6 @@
 {
   "name": "dsh-ws-deflate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Enable permessage-deflate on DSH's WebSocket transport (/api/remote.mux) without modifying the DSH install tree. Host-only plugin; measured 70.9% fewer wire bytes for a session transcript on one Windows box.",
   "type": "module",
   "main": "lib/index.js",
